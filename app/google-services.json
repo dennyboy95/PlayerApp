@@ -1,8 +1,8 @@
 {
   "project_info": {
     "project_number": "463197691435",
-    "firebase_url": "https://playerapplication.firebaseio.com",
-    "project_id": "playerapplication",
+    "firebase_url": "https://playerapp.firebaseio.com",
+    "project_id": "playerapp",
     "storage_bucket": "playerapplication.appspot.com"
   },
   "client": [
@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:463197691435:android:c3c083a696f0b162",
         "android_client_info": {
-          "package_name": "kanedenzil.playerapplication"
+          "package_name": "kanedenzil.playerapp"
         }
       },
       "oauth_client": [
@@ -18,7 +18,7 @@
           "client_id": "463197691435-dtq66htbimboegmk37vlhqirbu1pfvof.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "kanedenzil.playerapplication",
+            "package_name": "kanedenzil.playerapp",
             "certificate_hash": "b8d09b6aefe0b482414fb3d33ad389d1e89f4f0a"
           }
         },
