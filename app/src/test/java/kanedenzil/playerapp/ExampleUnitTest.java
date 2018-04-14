@@ -1,4 +1,4 @@
-package kanedenzil.playerapplication;
+package kanedenzil.playerapp;
 
 import org.junit.Test;
 
