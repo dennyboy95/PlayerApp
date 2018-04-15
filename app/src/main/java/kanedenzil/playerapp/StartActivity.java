@@ -1,12 +1,6 @@
 package kanedenzil.playerapp;
 
 
-import android.support.v7.app.AppCompatActivity;
-
-import android.location.Location;
-import android.util.Log;
-
-import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -17,7 +11,11 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -25,10 +23,22 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 
 public class StartActivity extends AppCompatActivity implements LocationListener, GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener {
+        GoogleApiClient.OnConnectionFailedListener,View.OnClickListener {
+
+
+    EditText nameOfPerson;
+    Button teamA;
+    Button teamB;
+    String teamNameA = "Team A";
+    String teamNameB = "Team B";
+
+    DatabaseReference databaseName ;
+
 
     private static final String TAG = StartActivity.class.getSimpleName();
     //    private GoogleMap map;
@@ -48,6 +58,14 @@ public class StartActivity extends AppCompatActivity implements LocationListener
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
+
+        nameOfPerson = (EditText) findViewById(R.id.name);
+        teamA = (Button)findViewById(R.id.team_a);
+        teamB = (Button)findViewById(R.id.team_b);
+
+        databaseName = FirebaseDatabase.getInstance().getReference("Players Data");
+
+
         // create GoogleApiClient
         createGoogleApi();
         if (checkPermission()) {
@@ -217,4 +235,60 @@ public class StartActivity extends AppCompatActivity implements LocationListener
 //
 //    }
 
+
+//On click function when team A is clicked
+
+
+  public void teamAClicked() {
+
+        String name = nameOfPerson.getText().toString().trim();
+
+        if (!TextUtils.isEmpty(name)){
+
+     String id = databaseName.push().getKey();
+
+     Player player = new Player (id,name,teamNameA );
+
+     databaseName.child(id).setValue(player);
+
+     Toast.makeText(this, "Player is added",Toast.LENGTH_LONG).show();
+        }
+        else
+        {
+            Toast.makeText(this , "Your name should be entered", Toast.LENGTH_LONG).show();
+
+        }
+
+    }
+
+//On click function whcn Team B is clicked
+
+    public void teamBClicked() {
+
+        String name = nameOfPerson.getText().toString().trim();
+
+        if (!TextUtils.isEmpty(name)){
+
+            String id = databaseName.push().getKey();
+
+            Player player = new Player ( id,name,teamNameB );
+
+            databaseName.child(id).setValue(player);
+
+            Toast.makeText(this, "Player is added",Toast.LENGTH_LONG).show();
+        }
+        else
+        {
+            Toast.makeText(this , "Your name should be entered", Toast.LENGTH_LONG).show();
+
+        }
+
+    }
+
+
+    @Override
+    public void onClick(View v) {
+
+    }
 }
+
