@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">PlayerApp</string>
+    <array name="teams">
+
+        <item>Team-A</item>
+        <item>Team-B</item>
+    </array>
+
 </resources>

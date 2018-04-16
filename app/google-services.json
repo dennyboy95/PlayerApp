@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "463197691435",
-    "firebase_url": "https://playerapp.firebaseio.com",
-    "project_id": "playerapp",
-    "storage_bucket": "playerapplication.appspot.com"
+    "project_number": "227638583248",
+    "firebase_url": "https://player-application.firebaseio.com",
+    "project_id": "player-application",
+    "storage_bucket": "player-application.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:463197691435:android:c3c083a696f0b162",
+        "mobilesdk_app_id": "1:227638583248:android:c9bf8ddf2d656ff8",
         "android_client_info": {
           "package_name": "kanedenzil.playerapp"
         }
       },
       "oauth_client": [
         {
-          "client_id": "463197691435-dtq66htbimboegmk37vlhqirbu1pfvof.apps.googleusercontent.com",
+          "client_id": "227638583248-e4fcrrmctm1vukuf7u0lqp6k968a6mgh.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "kanedenzil.playerapp",
@@ -23,13 +23,13 @@
           }
         },
         {
-          "client_id": "463197691435-ajfjmtai8fvec0r1cil213s7774lih0f.apps.googleusercontent.com",
+          "client_id": "227638583248-hb39orcd842ueeo8q3fgr2rrpj29pi9h.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBRNWhIZOzYOwwilQKCfLXlcrCoP_vIUDQ"
+          "current_key": "AIzaSyC1KJ3g2OawXm5rTGiODAwRThr3FKhPEGk"
         }
       ],
       "services": {
@@ -40,7 +40,7 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "463197691435-ajfjmtai8fvec0r1cil213s7774lih0f.apps.googleusercontent.com",
+              "client_id": "227638583248-hb39orcd842ueeo8q3fgr2rrpj29pi9h.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

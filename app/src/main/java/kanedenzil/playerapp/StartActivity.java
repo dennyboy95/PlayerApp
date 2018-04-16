@@ -4,6 +4,7 @@ package kanedenzil.playerapp;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Address;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -16,6 +17,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -32,12 +34,10 @@ public class StartActivity extends AppCompatActivity implements LocationListener
 
 
     EditText nameOfPerson;
-    Button teamA;
-    Button teamB;
-    String teamNameA = "Team A";
-    String teamNameB = "Team B";
+    Button submit;
+    Spinner spinnerTeam;
 
-    DatabaseReference databaseName ;
+    DatabaseReference databaseName;
 
 
     private static final String TAG = StartActivity.class.getSimpleName();
@@ -59,12 +59,22 @@ public class StartActivity extends AppCompatActivity implements LocationListener
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
 
-        nameOfPerson = (EditText) findViewById(R.id.name);
-        teamA = (Button)findViewById(R.id.team_a);
-        teamB = (Button)findViewById(R.id.team_b);
+        nameOfPerson = (EditText) findViewById(R.id.editTextName);
+        submit = (Button) findViewById(R.id.submit);
+        spinnerTeam = (Spinner) findViewById(R.id.teamNames);
 
         databaseName = FirebaseDatabase.getInstance().getReference("Players Data");
 
+
+        submit.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                submitClicked();
+
+            }
+        });
 
         // create GoogleApiClient
         createGoogleApi();
@@ -236,55 +246,38 @@ public class StartActivity extends AppCompatActivity implements LocationListener
 //    }
 
 
-//On click function when team A is clicked
+//when submit button is clicked
 
 
-  public void teamAClicked() {
-
+    public void submitClicked() {
         String name = nameOfPerson.getText().toString().trim();
+        String team = spinnerTeam.getSelectedItem().toString();
 
-        if (!TextUtils.isEmpty(name)){
 
-     String id = databaseName.push().getKey();
+        lastLocation location;
 
-     Player player = new Player (id,name,teamNameA );
+        double latitude = location.getLatitude();
+       double longitude = location.getLongitude();
 
-     databaseName.child(id).setValue(player);
+        if (!TextUtils.isEmpty(name)) {
 
-     Toast.makeText(this, "Player is added",Toast.LENGTH_LONG).show();
-        }
-        else
-        {
-            Toast.makeText(this , "Your name should be entered", Toast.LENGTH_LONG).show();
-
-        }
-
-    }
-
-//On click function whcn Team B is clicked
-
-    public void teamBClicked() {
-
-        String name = nameOfPerson.getText().toString().trim();
-
-        if (!TextUtils.isEmpty(name)){
 
             String id = databaseName.push().getKey();
 
-            Player player = new Player ( id,name,teamNameB );
+            Player player = new Player(id,name,team);
+
+            Player locate = new Player(latitude,longitude);
 
             databaseName.child(id).setValue(player);
+            databaseName.child(id).updateChildren(locate);
 
-            Toast.makeText(this, "Player is added",Toast.LENGTH_LONG).show();
-        }
-        else
-        {
-            Toast.makeText(this , "Your name should be entered", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Player is added", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(this, "Your should enter your name", Toast.LENGTH_LONG).show();
 
         }
 
     }
-
 
     @Override
     public void onClick(View v) {
