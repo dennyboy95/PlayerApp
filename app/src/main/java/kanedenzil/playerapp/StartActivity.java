@@ -25,8 +25,15 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.places.PlaceReport;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class StartActivity extends AppCompatActivity implements LocationListener, GoogleApiClient.ConnectionCallbacks,
@@ -37,14 +44,18 @@ public class StartActivity extends AppCompatActivity implements LocationListener
     Button submit;
     Spinner spinnerTeam;
 
-    DatabaseReference databaseName;
+    FirebaseDatabase db;
+    DatabaseReference root;
+    private ChildEventListener childEventListener;
+    List<Player> players = new ArrayList<>();
 
-
+    private String uniqueReferenceID;
     private static final String TAG = StartActivity.class.getSimpleName();
     //    private GoogleMap map;
     private GoogleApiClient googleApiClient;
     private Location lastLocation;
     private static final String NOTIFICATION_MSG = "NOTIFICATION MSG";
+    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("players").push();
 
     // Create a Intent send by the notification
     public static Intent makeNotificationIntent(Context context, String msg) {
@@ -63,7 +74,9 @@ public class StartActivity extends AppCompatActivity implements LocationListener
         submit = (Button) findViewById(R.id.submit);
         spinnerTeam = (Spinner) findViewById(R.id.teamNames);
 
-        databaseName = FirebaseDatabase.getInstance().getReference("Players Data");
+        db = FirebaseDatabase.getInstance();
+        root = db.getReference();
+        uniqueReferenceID = root.push().getKey();
 
 
         submit.setOnClickListener(new View.OnClickListener() {
@@ -83,6 +96,8 @@ public class StartActivity extends AppCompatActivity implements LocationListener
         } else {
             askPermission();
         }
+
+//        listenForEvent();
     }
 
     // Create GoogleApiClient instance
@@ -144,7 +159,7 @@ public class StartActivity extends AppCompatActivity implements LocationListener
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // Permission granted
                     Toast.makeText(this, "Permission Granted", Toast.LENGTH_SHORT).show();
-                    getLastKnownLocation();
+
 
                 } else {
                     // Permission denied
@@ -186,8 +201,9 @@ public class StartActivity extends AppCompatActivity implements LocationListener
     @Override
     public void onConnected(@Nullable Bundle bundle) {
         Log.i(TAG, "onConnected()");
-        getLastKnownLocation();
+//        getLastKnownLocation();
     }
+
 
     // GoogleApiClient.ConnectionCallbacks suspended
     @Override
@@ -220,6 +236,18 @@ public class StartActivity extends AppCompatActivity implements LocationListener
     }
 
     private void writeActualLocation(Location location) {
+
+        String key;
+        key = root.child("players").getKey();
+        Toast.makeText(this, key, Toast.LENGTH_SHORT).show();
+//        Log.d(TAG, "####################################### " + key);
+//        root.child("players").child(uniqueReferenceID).child("latitude").setValue(location.getLatitude());
+//        root.child("players").child(uniqueReferenceID).child("longitude").setValue(location.getLongitude());
+
+
+//        DatabaseReference updatePlayerLocation = databaseReference.child(databaseReference.getKey());
+        databaseReference.child("latitude").setValue(location.getLatitude());
+        databaseReference.child("longitude").setValue(location.getLongitude());
         Log.d(TAG, "writeActualLocation: " + location.getLatitude() + location.getLongitude());
 //        markerLocation(new LatLng(location.getLatitude(), location.getLongitude()));
     }
@@ -253,24 +281,13 @@ public class StartActivity extends AppCompatActivity implements LocationListener
         String name = nameOfPerson.getText().toString().trim();
         String team = spinnerTeam.getSelectedItem().toString();
 
-
-        lastLocation location;
-
-        double latitude = location.getLatitude();
-       double longitude = location.getLongitude();
-
         if (!TextUtils.isEmpty(name)) {
 
+            Player player = new Player(databaseReference.getKey(), name,team, 0.0, 0.0);
 
-            String id = databaseName.push().getKey();
-
-            Player player = new Player(id,name,team);
-
-            Player locate = new Player(latitude,longitude);
-
-            databaseName.child(id).setValue(player);
-            databaseName.child(id).updateChildren(locate);
-
+            players.add(player);
+            databaseReference.setValue(player);
+            getLastKnownLocation();
             Toast.makeText(this, "Player is added", Toast.LENGTH_LONG).show();
         } else {
             Toast.makeText(this, "Your should enter your name", Toast.LENGTH_LONG).show();
@@ -283,5 +300,57 @@ public class StartActivity extends AppCompatActivity implements LocationListener
     public void onClick(View v) {
 
     }
+
+//    public void listenForEvent(){
+//        if(childEventListener == null) {
+//            childEventListener = new ChildEventListener() {
+//                @Override
+//                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+//                    String key = dataSnapshot.getKey();
+//                    Player p = dataSnapshot.getValue(Player.class);
+//                    Log.d(TAG, "onChildChanged: CHILD HAS CHANGED");
+//                    for(Player pl : players){
+//                        if(pl.getPlayerId().equals(key)){
+//                            pl.latitude = p.latitude;
+//                            pl.longitude = p.longitude;
+//                            break;
+//                        }
+//                    }
+//
+//                }
+//
+//                @Override
+//                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+//                    String key = dataSnapshot.getKey();
+//                    Player p = dataSnapshot.getValue(Player.class);
+//                    Log.d(TAG, "onChildChanged: CHILD HAS CHANGED");
+//                    for(Player pl : players){
+//                        if(pl.getPlayerId().equals(key)){
+//                            pl.latitude = p.latitude;
+//                            pl.longitude = p.longitude;
+//                            break;
+//                        }
+//                    }
+//
+//                }
+//
+//                @Override
+//                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+//
+//                }
+//
+//                @Override
+//                public void onChildRemoved(DataSnapshot dataSnapshot) {
+//
+//                }
+//
+//                @Override
+//                public void onCancelled(DatabaseError databaseError) {
+//
+//                }
+//            };
+//        }
+//        root.child("players").addChildEventListener(childEventListener);
+//    }
 }
 

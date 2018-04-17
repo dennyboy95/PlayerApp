@@ -2,7 +2,7 @@ package kanedenzil.playerapp;
 
 import java.util.Map;
 
-class Player implements Map<String, Object> {
+class Player  {
 
     String playerId;
     String playerName;
@@ -10,10 +10,12 @@ class Player implements Map<String, Object> {
     Double latitude;
     Double longitude;
 
-    public Player(String playerId, String playerName, String playerTeam) {
+    public Player(String playerId, String playerName, String playerTeam, Double latitude, Double longitude) {
         this.playerId = playerId;
         this.playerName = playerName;
         this.playerTeam = playerTeam;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     public Player(double latitude, double longitude) {
@@ -30,4 +32,22 @@ class Player implements Map<String, Object> {
     public String getPlayerTeam() {
         return playerTeam;
     }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
+    }
+
+
 }
