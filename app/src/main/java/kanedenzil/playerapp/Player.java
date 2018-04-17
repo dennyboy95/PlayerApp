@@ -1,8 +1,6 @@
 package kanedenzil.playerapp;
 
-import java.util.Map;
-
-class Player implements Map<String, Object> {
+class Player {
 
     String playerId;
     String playerName;
@@ -14,6 +12,15 @@ class Player implements Map<String, Object> {
         this.playerId = playerId;
         this.playerName = playerName;
         this.playerTeam = playerTeam;
+
+        StartActivity location  = new StartActivity();
+
+
+       location.getLastKnownLocation();
+
+
+
+
     }
 
     public Player(double latitude, double longitude) {

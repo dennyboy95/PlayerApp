@@ -4,7 +4,6 @@ package kanedenzil.playerapp;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.Address;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -202,7 +201,7 @@ public class StartActivity extends AppCompatActivity implements LocationListener
     }
 
     // Get last known location
-    private void getLastKnownLocation() {
+    public Double getLastKnownLocation() {
         Log.d(TAG, "getLastKnownLocation()");
         if (checkPermission()) {
             lastLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
@@ -212,11 +211,16 @@ public class StartActivity extends AppCompatActivity implements LocationListener
                         " | Lat: " + lastLocation.getLatitude());
                 writeLastLocation();
                 startLocationUpdates();
+
+                return( );
+
             } else {
                 Log.w(TAG, "No location retrieved yet");
                 startLocationUpdates();
+                return null;
             }
         } else askPermission();
+        return null;
     }
 
     private void writeActualLocation(Location location) {
@@ -252,12 +256,6 @@ public class StartActivity extends AppCompatActivity implements LocationListener
     public void submitClicked() {
         String name = nameOfPerson.getText().toString().trim();
         String team = spinnerTeam.getSelectedItem().toString();
-
-
-        lastLocation location;
-
-        double latitude = location.getLatitude();
-       double longitude = location.getLongitude();
 
         if (!TextUtils.isEmpty(name)) {
 
