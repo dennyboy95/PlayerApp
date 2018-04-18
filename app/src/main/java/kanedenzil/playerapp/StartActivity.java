@@ -49,7 +49,6 @@ public class StartActivity extends AppCompatActivity implements LocationListener
     private ChildEventListener childEventListener;
     List<Player> players = new ArrayList<>();
 
-    private String uniqueReferenceID;
     private static final String TAG = StartActivity.class.getSimpleName();
     //    private GoogleMap map;
     private GoogleApiClient googleApiClient;
@@ -76,8 +75,6 @@ public class StartActivity extends AppCompatActivity implements LocationListener
 
         db = FirebaseDatabase.getInstance();
         root = db.getReference();
-        uniqueReferenceID = root.push().getKey();
-
 
         submit.setOnClickListener(new View.OnClickListener() {
 
@@ -171,8 +168,8 @@ public class StartActivity extends AppCompatActivity implements LocationListener
     private LocationRequest locationRequest;
     //    // Defined in mili seconds.
 //    // This number in extremely low, and should be used only for debug
-    private final int UPDATE_INTERVAL = 1000;
-    private final int FASTEST_INTERVAL = 900;
+    private final int UPDATE_INTERVAL = 500;
+    private final int FASTEST_INTERVAL = 100;
 
     // Start location Updates
     private void startLocationUpdates() {
