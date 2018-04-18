@@ -4,7 +4,6 @@ package kanedenzil.playerapp;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.Address;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -25,10 +24,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.places.PlaceReport;
 import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -288,6 +284,9 @@ public class StartActivity extends AppCompatActivity implements LocationListener
             }
 
             Toast.makeText(this, "Player is added", Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(this, DirectionActivity.class);
+            startActivity(intent);
+
         } else {
             Toast.makeText(this, "Your should enter your name", Toast.LENGTH_LONG).show();
 
