@@ -9,6 +9,7 @@
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
   </component>
   <component name="ChangeListManager">
+<<<<<<< HEAD
     <list default="true" id="0a82914d-98df-4904-ab2a-c893cfc3dd94" name="Default" comment="">
       <change beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/kanedenzil/playerapp/DirectionActivity.java" />
       <change beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/flag.jpeg" />
@@ -30,6 +31,9 @@
       <change beforePath="$PROJECT_DIR$/app/src/main/java/kanedenzil/playerapp/StartActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/kanedenzil/playerapp/StartActivity.java" />
       <change beforePath="$PROJECT_DIR$/local.properties" afterPath="$PROJECT_DIR$/local.properties" />
     </list>
+=======
+    <list default="true" id="0a82914d-98df-4904-ab2a-c893cfc3dd94" name="Default" comment="" />
+>>>>>>> 7d916971cfd4926375d709c7ea53ec3cf85824a9
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -118,9 +122,18 @@
       <file leaf-file-name="Player.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/kanedenzil/playerapp/Player.java">
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
             <state relative-caret-position="255">
               <caret line="17" column="35" lean-forward="false" selection-start-line="17" selection-start-column="35" selection-end-line="17" selection-end-column="35" />
               <folding />
+=======
+            <state relative-caret-position="310">
+              <caret line="24" column="24" lean-forward="false" selection-start-line="24" selection-start-column="24" selection-end-line="24" selection-end-column="24" />
+              <folding>
+                <element signature="e#573#574#0" expanded="true" />
+                <element signature="e#604#605#0" expanded="true" />
+              </folding>
+>>>>>>> 7d916971cfd4926375d709c7ea53ec3cf85824a9
             </state>
           </provider>
         </entry>
@@ -128,6 +141,7 @@
       <file leaf-file-name="StartActivity.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/kanedenzil/playerapp/StartActivity.java">
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
             <state relative-caret-position="3735">
               <caret line="281" column="78" lean-forward="false" selection-start-line="281" selection-start-column="78" selection-end-line="281" selection-end-column="78" />
               <folding>
@@ -135,6 +149,15 @@
                 <element signature="e#6944#6945#0" expanded="true" />
                 <element signature="e#8835#8836#0" expanded="true" />
                 <element signature="e#8884#8885#0" expanded="true" />
+=======
+            <state relative-caret-position="297">
+              <caret line="153" column="43" lean-forward="true" selection-start-line="153" selection-start-column="43" selection-end-line="153" selection-end-column="43" />
+              <folding>
+                <element signature="e#2942#3094#0" expanded="true" />
+                <element signature="e#3093#3094#0" expanded="true" />
+                <element signature="e#8900#8901#0" expanded="true" />
+                <element signature="e#8949#8950#0" expanded="true" />
+>>>>>>> 7d916971cfd4926375d709c7ea53ec3cf85824a9
               </folding>
             </state>
           </provider>
@@ -184,6 +207,8 @@
       <find>child</find>
       <find>writeLastLocation</find>
       <find>getLastKnownLocation</find>
+      <find>askPermission</find>
+      <find>onRequest</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -2447,7 +2472,11 @@
       <option name="ACTIVITY_CLASS" value="" />
       <method>
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
+<<<<<<< HEAD
         <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" />
+=======
+        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1523999477273" />
+>>>>>>> 7d916971cfd4926375d709c7ea53ec3cf85824a9
       </method>
     </configuration>
     <configuration name="app" type="AndroidRunConfigurationType" factoryName="Android App" activateToolWindowBeforeRun="false">
@@ -2540,7 +2569,11 @@
       </Profilers>
       <method>
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
+<<<<<<< HEAD
         <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" />
+=======
+        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1523999477273" />
+>>>>>>> 7d916971cfd4926375d709c7ea53ec3cf85824a9
       </method>
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
@@ -2620,6 +2653,59 @@
       <envs />
       <properties />
       <listeners />
+<<<<<<< HEAD
+=======
+      <method />
+    </configuration>
+    <configuration default="false" name="app" type="AndroidRunConfigurationType" factoryName="Android App" activateToolWindowBeforeRun="false">
+      <module name="app" />
+      <option name="DEPLOY" value="true" />
+      <option name="ARTIFACT_NAME" value="" />
+      <option name="PM_INSTALL_OPTIONS" value="" />
+      <option name="ACTIVITY_EXTRA_FLAGS" value="" />
+      <option name="MODE" value="default_activity" />
+      <option name="CLEAR_LOGCAT" value="false" />
+      <option name="SHOW_LOGCAT_AUTOMATICALLY" value="false" />
+      <option name="SKIP_NOOP_APK_INSTALLATIONS" value="true" />
+      <option name="FORCE_STOP_RUNNING_APP" value="true" />
+      <option name="TARGET_SELECTION_MODE" value="SHOW_DIALOG" />
+      <option name="USE_LAST_SELECTED_DEVICE" value="false" />
+      <option name="PREFERRED_AVD" value="" />
+      <option name="SELECTED_CLOUD_MATRIX_CONFIGURATION_ID" value="-1" />
+      <option name="SELECTED_CLOUD_MATRIX_PROJECT_ID" value="" />
+      <option name="DEBUGGER_TYPE" value="Auto" />
+      <Auto>
+        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
+        <option name="SHOW_STATIC_VARS" value="true" />
+        <option name="WORKING_DIR" value="" />
+        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
+        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+      </Auto>
+      <Hybrid>
+        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
+        <option name="SHOW_STATIC_VARS" value="true" />
+        <option name="WORKING_DIR" value="" />
+        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
+        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+      </Hybrid>
+      <Java />
+      <Native>
+        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
+        <option name="SHOW_STATIC_VARS" value="true" />
+        <option name="WORKING_DIR" value="" />
+        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
+        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+      </Native>
+      <Profilers>
+        <option name="ADVANCED_PROFILING_ENABLED" value="false" />
+      </Profilers>
+      <option name="DEEP_LINK" value="" />
+      <option name="ACTIVITY_CLASS" value="" />
+      <method>
+        <option name="Android.Gradle.BeforeRunTask" enabled="true" />
+        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1523999477274" />
+      </method>
+>>>>>>> 7d916971cfd4926375d709c7ea53ec3cf85824a9
     </configuration>
     <configuration name="&lt;template&gt;" type="Applet" default="true" selected="false">
       <option name="MAIN_CLASS_NAME" />
@@ -2924,10 +3010,17 @@
         <state relative-caret-position="4380">
           <caret line="328" column="55" lean-forward="true" selection-start-line="328" selection-start-column="55" selection-end-line="328" selection-end-column="55" />
           <folding>
+<<<<<<< HEAD
             <element signature="e#6891#6892#0" expanded="true" />
             <element signature="e#6944#6945#0" expanded="true" />
             <element signature="e#8835#8836#0" expanded="true" />
             <element signature="e#8884#8885#0" expanded="true" />
+=======
+            <element signature="e#2942#3094#0" expanded="true" />
+            <element signature="e#3093#3094#0" expanded="true" />
+            <element signature="e#8900#8901#0" expanded="true" />
+            <element signature="e#8949#8950#0" expanded="true" />
+>>>>>>> 7d916971cfd4926375d709c7ea53ec3cf85824a9
           </folding>
         </state>
       </provider>
@@ -2980,10 +3073,17 @@
         <state relative-caret-position="3180">
           <caret line="239" column="0" lean-forward="true" selection-start-line="239" selection-start-column="0" selection-end-line="239" selection-end-column="0" />
           <folding>
+<<<<<<< HEAD
             <element signature="e#6891#6892#0" expanded="true" />
             <element signature="e#6944#6945#0" expanded="true" />
             <element signature="e#8835#8836#0" expanded="true" />
             <element signature="e#8884#8885#0" expanded="true" />
+=======
+            <element signature="e#2942#3094#0" expanded="true" />
+            <element signature="e#3093#3094#0" expanded="true" />
+            <element signature="e#8900#8901#0" expanded="true" />
+            <element signature="e#8949#8950#0" expanded="true" />
+>>>>>>> 7d916971cfd4926375d709c7ea53ec3cf85824a9
           </folding>
         </state>
       </provider>
@@ -3144,14 +3244,24 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/kanedenzil/playerapp/Player.java">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="255">
           <caret line="17" column="35" lean-forward="false" selection-start-line="17" selection-start-column="35" selection-end-line="17" selection-end-column="35" />
           <folding />
+=======
+        <state relative-caret-position="310">
+          <caret line="24" column="24" lean-forward="false" selection-start-line="24" selection-start-column="24" selection-end-line="24" selection-end-column="24" />
+          <folding>
+            <element signature="e#573#574#0" expanded="true" />
+            <element signature="e#604#605#0" expanded="true" />
+          </folding>
+>>>>>>> 7d916971cfd4926375d709c7ea53ec3cf85824a9
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/kanedenzil/playerapp/StartActivity.java">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="3735">
           <caret line="281" column="78" lean-forward="false" selection-start-line="281" selection-start-column="78" selection-end-line="281" selection-end-column="78" />
           <folding>
@@ -3159,6 +3269,15 @@
             <element signature="e#6944#6945#0" expanded="true" />
             <element signature="e#8835#8836#0" expanded="true" />
             <element signature="e#8884#8885#0" expanded="true" />
+=======
+        <state relative-caret-position="297">
+          <caret line="153" column="43" lean-forward="true" selection-start-line="153" selection-start-column="43" selection-end-line="153" selection-end-column="43" />
+          <folding>
+            <element signature="e#2942#3094#0" expanded="true" />
+            <element signature="e#3093#3094#0" expanded="true" />
+            <element signature="e#8900#8901#0" expanded="true" />
+            <element signature="e#8949#8950#0" expanded="true" />
+>>>>>>> 7d916971cfd4926375d709c7ea53ec3cf85824a9
           </folding>
         </state>
       </provider>

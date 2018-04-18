@@ -87,11 +87,7 @@ public class StartActivity extends AppCompatActivity implements LocationListener
 
         // create GoogleApiClient
         createGoogleApi();
-        if (checkPermission()) {
-            Toast.makeText(this, "Permission Granted", Toast.LENGTH_SHORT).show();
-        } else {
-            askPermission();
-        }
+
 
 //        listenForEvent();
     }
@@ -155,7 +151,7 @@ public class StartActivity extends AppCompatActivity implements LocationListener
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // Permission granted
                     Toast.makeText(this, "Permission Granted", Toast.LENGTH_SHORT).show();
-
+                    getLastKnownLocation();
 
                 } else {
                     // Permission denied
@@ -283,7 +279,13 @@ public class StartActivity extends AppCompatActivity implements LocationListener
 
             players.add(player);
             databaseReference.setValue(player);
-            getLastKnownLocation();
+            if (checkPermission()) {
+                Toast.makeText(this, "Permission Granted", Toast.LENGTH_SHORT).show();
+                getLastKnownLocation();
+            } else {
+                askPermission();
+            }
+
             Toast.makeText(this, "Player is added", Toast.LENGTH_LONG).show();
             Intent intent = new Intent(this, DirectionActivity.class);
             startActivity(intent);
