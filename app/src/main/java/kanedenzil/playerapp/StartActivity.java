@@ -284,7 +284,11 @@ public class StartActivity extends AppCompatActivity implements LocationListener
             }
 
             Toast.makeText(this, "Player is added", Toast.LENGTH_LONG).show();
+
+
             Intent intent = new Intent(this, DirectionActivity.class);
+            intent.putExtra("name", nameOfPerson.getText().toString());
+            intent.putExtra("team", team);
             startActivity(intent);
 
         } else {
