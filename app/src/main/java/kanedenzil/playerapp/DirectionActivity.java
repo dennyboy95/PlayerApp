@@ -22,9 +22,6 @@ public class DirectionActivity extends AppCompatActivity {
     TextView textView;
     DatabaseReference root;
 
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
