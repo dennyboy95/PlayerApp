@@ -1,7 +1,5 @@
 package kanedenzil.playerapp;
 
-import java.util.Map;
-
 class Player  {
 
     String playerId;
@@ -19,6 +17,9 @@ class Player  {
     }
 
     public Player(double latitude, double longitude) {
+    }
+
+    public Player() {
     }
 
     public String getPlayerId() {
