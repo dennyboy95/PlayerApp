@@ -42,7 +42,8 @@ public class DirectionActivity extends AppCompatActivity implements LocationList
     DatabaseReference databaseReferenceflag = FirebaseDatabase.getInstance().getReference().child("flag");
     private static final String TAG = DirectionActivity.class.getSimpleName();
     Location flagLocation = new Location("");
-
+    Location myCurrentLocation = new Location("");
+    String teamName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +51,7 @@ public class DirectionActivity extends AppCompatActivity implements LocationList
         setContentView(R.layout.activity_direction);
         Flag flag = new Flag(false);
         databaseReferenceflag.setValue(flag);
-
+        teamName = getIntent().getExtras().getString("team");
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
 
         textView = findViewById(R.id.textView3);
@@ -59,8 +60,8 @@ public class DirectionActivity extends AppCompatActivity implements LocationList
         googleApiClient.connect();
         Log.d(TAG, " googleApiClient HAS BEEN CONNECTED");
         // mMap.setMyLocationEnabled(true)
-        String teamName = getIntent().getExtras().getString("team");
-        if(teamName == "Team-A") {
+
+        if(teamName.equals("Team-A")) {
 
             flagLocation.setLatitude(43.773705);
             flagLocation.setLongitude(-79.335894);
@@ -93,7 +94,60 @@ public class DirectionActivity extends AppCompatActivity implements LocationList
             }
         });
 
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
 
+                Log.d(TAG, "onDataChange: ==============Sanapshot==========="+dataSnapshot.toString());
+                List<Player> players =  new ArrayList<>();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Player player = snapshot.getValue(Player.class);
+                    players.add(player);
+                    Log.d(TAG, "Name: "+ player.playerName);
+                }
+                setPlayerDistance(players);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+    public void setPlayerDistance(List<Player> players){
+        if(players.size() != 0) {
+            List<Float> distanceList =  new ArrayList<>();
+            Location opponentCurrentLocation = new Location("");
+            for (Player player : players) {
+                if(teamName.equals("Team-A")){
+                    if(player.playerTeam.equals("Team-B")) {
+                        opponentCurrentLocation.setLatitude(player.latitude);
+                        opponentCurrentLocation.setLongitude(player.longitude);
+                        float distanceInmeters = opponentCurrentLocation.distanceTo(myCurrentLocation);
+                        if(distanceInmeters<10){
+                            Toast.makeText(this, "You are out. Now You are imprisoned", Toast.LENGTH_SHORT).show();
+
+                        }
+                        String distanceInmetersString = String.format("%.2f", distanceInmeters);
+                        Log.d(TAG, "setPlayerDistance: " + distanceInmetersString);
+                    }
+                }else {
+                    if (player.playerTeam.equals("Team-A")) {
+                        opponentCurrentLocation.setLatitude(player.latitude);
+                        opponentCurrentLocation.setLongitude(player.longitude);
+                        float distanceInmeters = opponentCurrentLocation.distanceTo(myCurrentLocation);
+                        if(distanceInmeters<10){
+                            Toast.makeText(this, "You are out. Now You are imprisoned", Toast.LENGTH_SHORT).show();
+                        }
+                        String distanceInmetersString = String.format("%.2f", distanceInmeters);
+                        Log.d(TAG, "setPlayerDistance: iAM on team B" + distanceInmetersString);
+                    }
+                }
+
+            }
+        }
     }
 
     // Create GoogleApiClient instance
@@ -247,6 +301,7 @@ public class DirectionActivity extends AppCompatActivity implements LocationList
         DatabaseReference updatePlayerLocation = databaseReference.child(playerReferenceId);
         updatePlayerLocation.child("latitude").setValue(location.getLatitude());
         updatePlayerLocation.child("longitude").setValue(location.getLongitude());
+        myCurrentLocation = location;
         Log.d(TAG, "writeActualLocation: " + location.getLatitude() + location.getLongitude());
 
         float distanceInmeters = flagLocation.distanceTo(location);
