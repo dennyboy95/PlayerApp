@@ -50,6 +50,7 @@ public class StartActivity extends AppCompatActivity {
     private static final String NOTIFICATION_MSG = "NOTIFICATION MSG";
     DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("players").push();
 
+
     // Create a Intent send by the notification
     public static Intent makeNotificationIntent(Context context, String msg) {
         Intent intent = new Intent(context, StartActivity.class);

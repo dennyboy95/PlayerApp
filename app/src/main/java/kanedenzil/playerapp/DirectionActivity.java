@@ -36,8 +36,10 @@ public class DirectionActivity extends AppCompatActivity implements LocationList
     //    private GoogleMap map;
     private GoogleApiClient googleApiClient;
     private Location lastLocation;
+    private ValueEventListener valueEventListener;
 //    private static final String NOTIFICATION_MSG = "NOTIFICATION MSG";
     DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("players");
+    DatabaseReference databaseReferenceflag = FirebaseDatabase.getInstance().getReference().child("flag");
     private static final String TAG = DirectionActivity.class.getSimpleName();
     Location flagLocation = new Location("");
 
@@ -46,6 +48,8 @@ public class DirectionActivity extends AppCompatActivity implements LocationList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_direction);
+        Flag flag = new Flag(false);
+        databaseReferenceflag.setValue(flag);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
 
@@ -68,6 +72,27 @@ public class DirectionActivity extends AppCompatActivity implements LocationList
         }
 
 //        getUpdateOnMap();
+        databaseReferenceflag.addValueEventListener( new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.d(TAG, "onDataChange: ==============DATASanapshot==========="+dataSnapshot.toString());
+//                List<Player> players =  new ArrayList<>();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Log.d(TAG, "onDataChange: ==============snapshot==========="+snapshot.toString());
+                    Boolean flagValue = (Boolean) snapshot.getValue();
+                    Log.d(TAG, "onDataChange: "+ flagValue);
+                    if(flagValue.equals(true)){
+                        Toast.makeText(DirectionActivity.this, "FLAG HAS BEEN PICKED!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
 
     }
 
@@ -225,15 +250,19 @@ public class DirectionActivity extends AppCompatActivity implements LocationList
         Log.d(TAG, "writeActualLocation: " + location.getLatitude() + location.getLongitude());
 
         float distanceInmeters = flagLocation.distanceTo(location);
+        String distanceInmetersString = String.format("%.2f", distanceInmeters);
 //        Log.d(TAG, "writeActualLocation: $$$$$$$$$$$$$$$" + distanceInmeters);
         if(textView.getText().toString().isEmpty()) {
             textView.setText("");
         }
         else {
-            textView.setText("" + distanceInmeters + "meters");
 
+            textView.setText("" + distanceInmetersString + " meters");
+            if(distanceInmeters<100){
+                Flag flag = new Flag(true);
+                databaseReferenceflag.setValue(flag);
+            }
         }
-
     }
 
     private void writeLastLocation() {
