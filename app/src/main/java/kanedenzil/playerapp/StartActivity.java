@@ -88,7 +88,7 @@ public class StartActivity extends AppCompatActivity {
 
         if (!TextUtils.isEmpty(name)) {
 
-            Player player = new Player(databaseReference.getKey(), name,team, 0.0, 0.0);
+            Player player = new Player(databaseReference.getKey(), name,team, 0.0, 0.0, false);
 
             players.add(player);
             databaseReference.setValue(player);

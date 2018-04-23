@@ -48,8 +48,6 @@ public class DirectionActivity extends AppCompatActivity implements LocationList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_direction);
         Flag flag = new Flag(false);
-        PlayerFlag flag1 = new PlayerFlag(false);
-        databaseReference.setValue(flag1);
         databaseReferenceflag.setValue(flag);
         teamName = getIntent().getExtras().getString("team");
         textView = findViewById(R.id.textView3);
@@ -97,9 +95,10 @@ public class DirectionActivity extends AppCompatActivity implements LocationList
                 Log.d(TAG, "onDataChange: ==============Sanapshot==========="+dataSnapshot.toString());
                 List<Player> players =  new ArrayList<>();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    Boolean flagvalue1 = (Boolean) snapshot.getValue();
+
                     Player player = snapshot.getValue(Player.class);
-                    players.add(player);
+                    Boolean flagvalue1 = player.flagValue;
+                            players.add(player);
                     Log.d(TAG, "Name: "+ player.playerName);
                     if(flagvalue1.equals(true)){
                         Toast.makeText(DirectionActivity.this, "FLAG HAS BEEN PICKED!", Toast.LENGTH_SHORT).show();
@@ -320,9 +319,9 @@ public class DirectionActivity extends AppCompatActivity implements LocationList
 //        key = root.child("players").getKey();
 //        Toast.makeText(this, key, Toast.LENGTH_SHORT).show();
         String playerReferenceId = getIntent().getStringExtra("playerId");
-        DatabaseReference updatePlayerLocation = databaseReference.child(playerReferenceId);
-        updatePlayerLocation.child("latitude").setValue(location.getLatitude());
-        updatePlayerLocation.child("longitude").setValue(location.getLongitude());
+        DatabaseReference updatePlayer = databaseReference.child(playerReferenceId);
+        updatePlayer.child("latitude").setValue(location.getLatitude());
+        updatePlayer.child("longitude").setValue(location.getLongitude());
         myCurrentLocation = location;
         Log.d(TAG, "writeActualLocation: " + location.getLatitude() + location.getLongitude());
 
@@ -339,9 +338,7 @@ public class DirectionActivity extends AppCompatActivity implements LocationList
                 Flag flag = new Flag(true);
                 databaseReferenceflag.setValue(flag);
 
-                PlayerFlag flag1 = new PlayerFlag( true);
-                DatabaseReference updateFlagStatus = databaseReference.child(playerReferenceId);
-                updateFlagStatus.child("isFlagPicked").setValue(flag1);
+                updatePlayer.child("flagValue").setValue(true);
             }
         }
     }
