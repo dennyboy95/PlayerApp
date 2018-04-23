@@ -2,7 +2,6 @@ package kanedenzil.playerapp;
 
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -10,7 +9,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,10 +48,10 @@ public class DirectionActivity extends AppCompatActivity implements LocationList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_direction);
         Flag flag = new Flag(false);
+        PlayerFlag flag1 = new PlayerFlag(false);
+        databaseReference.setValue(flag1);
         databaseReferenceflag.setValue(flag);
         teamName = getIntent().getExtras().getString("team");
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-
         textView = findViewById(R.id.textView3);
         createGoogleApi();
 
@@ -99,9 +97,14 @@ public class DirectionActivity extends AppCompatActivity implements LocationList
                 Log.d(TAG, "onDataChange: ==============Sanapshot==========="+dataSnapshot.toString());
                 List<Player> players =  new ArrayList<>();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Boolean flagvalue1 = (Boolean) snapshot.getValue();
                     Player player = snapshot.getValue(Player.class);
                     players.add(player);
                     Log.d(TAG, "Name: "+ player.playerName);
+                    if(flagvalue1.equals(true)){
+                        Toast.makeText(DirectionActivity.this, "FLAG HAS BEEN PICKED!", Toast.LENGTH_SHORT).show();
+                    }
+
                 }
                 setPlayerDistance(players);
             }
@@ -142,6 +145,7 @@ public class DirectionActivity extends AppCompatActivity implements LocationList
                     if(player.playerTeam.equals("Team-B")) {
                         opponentCurrentLocation.setLatitude(player.latitude);
                         opponentCurrentLocation.setLongitude(player.longitude);
+
                         float distanceInmeters = opponentCurrentLocation.distanceTo(myCurrentLocation);
                         if(distanceInmeters<10){
                             Toast.makeText(this, "You are out. Now You are imprisoned", Toast.LENGTH_SHORT).show();
@@ -330,10 +334,14 @@ public class DirectionActivity extends AppCompatActivity implements LocationList
         }
         else {
 
-            textView.setText("" + distanceInmetersString + " meters");
+            textView.setText("" + distanceInmetersString );
             if(distanceInmeters<100){
                 Flag flag = new Flag(true);
                 databaseReferenceflag.setValue(flag);
+
+                PlayerFlag flag1 = new PlayerFlag( true);
+                DatabaseReference updateFlagStatus = databaseReference.child(playerReferenceId);
+                updateFlagStatus.child("isFlagPicked").setValue(flag1);
             }
         }
     }
