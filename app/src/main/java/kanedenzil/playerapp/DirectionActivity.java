@@ -35,18 +35,24 @@ public class DirectionActivity extends AppCompatActivity implements LocationList
     private GoogleApiClient googleApiClient;
     private Location lastLocation;
     private ValueEventListener valueEventListener;
-//    private static final String NOTIFICATION_MSG = "NOTIFICATION MSG";
+//  private static final String NOTIFICATION_MSG = "NOTIFICATION MSG";
     DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("players");
     DatabaseReference databaseReferenceflag = FirebaseDatabase.getInstance().getReference().child("flag");
     private static final String TAG = DirectionActivity.class.getSimpleName();
     Location flagLocation = new Location("");
     Location myCurrentLocation = new Location("");
     String teamName;
+    String playerReferenceId;
+    DatabaseReference updatePlayer;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_direction);
+        playerReferenceId = getIntent().getStringExtra("playerId");
+        updatePlayer = databaseReference.child(playerReferenceId);
+
         Flag flag = new Flag(false);
         databaseReferenceflag.setValue(flag);
         teamName = getIntent().getExtras().getString("team");
@@ -79,7 +85,7 @@ public class DirectionActivity extends AppCompatActivity implements LocationList
                     Boolean flagValue = (Boolean) snapshot.getValue();
                     Log.d(TAG, "onDataChange: "+ flagValue);
                     if(flagValue.equals(true)){
-                        Toast.makeText(DirectionActivity.this, "FLAG HAS BEEN PICKED!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(DirectionActivity.this, "FLAG HAS BEEN PICKED by " + teamName, Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -100,10 +106,9 @@ public class DirectionActivity extends AppCompatActivity implements LocationList
                     Boolean flagvalue1 = player.flagValue;
                             players.add(player);
                     Log.d(TAG, "Name: "+ player.playerName);
-                    if(flagvalue1.equals(true)){
-                        Toast.makeText(DirectionActivity.this, "FLAG HAS BEEN PICKED!", Toast.LENGTH_SHORT).show();
-                    }
-
+//                    if(flagvalue1.equals(true)){
+//                        Toast.makeText(DirectionActivity.this, "FLAG HAS BEEN PICKED!", Toast.LENGTH_SHORT).show();
+//                    }
                 }
                 setPlayerDistance(players);
             }
@@ -125,8 +130,11 @@ public class DirectionActivity extends AppCompatActivity implements LocationList
                 geofenceCenterLocation.setLatitude(43.716389);
                 geofenceCenterLocation.setLongitude(-79.334517);
                 float distanceFromGeoCenter = geofenceCenterLocation.distanceTo(myCurrentLocation);
+
+                Log.d(TAG, "setPlayerDistance: +_+_+_+_+_+_+_");
                 if(distanceFromGeoCenter>150.00){
-                    Toast.makeText(this, "You are out. Move To the Prison", Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, "setPlayerDistance: ////////////////////////");
+                    Toast.makeText(this, "You are out of Arena. Move To the Prison", Toast.LENGTH_SHORT).show();
                 }
                 prisonCenterLocation.setLatitude(43.775398);
                 prisonCenterLocation.setLongitude(-79.336056);
@@ -139,29 +147,25 @@ public class DirectionActivity extends AppCompatActivity implements LocationList
 //                }
 
 
-
                 if(teamName.equals("Team-A")){
                     if(player.playerTeam.equals("Team-B")) {
                         opponentCurrentLocation.setLatitude(player.latitude);
                         opponentCurrentLocation.setLongitude(player.longitude);
 
                         float distanceInmeters = opponentCurrentLocation.distanceTo(myCurrentLocation);
-                        if(distanceInmeters<10){
-                            Toast.makeText(this, "You are out. Now You are imprisoned", Toast.LENGTH_SHORT).show();
-
+                        if(distanceInmeters<5){
+                            Toast.makeText(this, "You are caught. Now You will be taken to prison", Toast.LENGTH_SHORT).show();
                         }
                         String distanceInmetersString = String.format("%.2f", distanceInmeters);
                         Log.d(TAG, "setPlayerDistance: " + distanceInmetersString);
-
-
                     }
                 }else {
                     if (player.playerTeam.equals("Team-A")) {
                         opponentCurrentLocation.setLatitude(player.latitude);
                         opponentCurrentLocation.setLongitude(player.longitude);
                         float distanceInmeters = opponentCurrentLocation.distanceTo(myCurrentLocation);
-                        if(distanceInmeters<10){
-                            Toast.makeText(this, "You are out. Now You are imprisoned", Toast.LENGTH_SHORT).show();
+                        if(distanceInmeters<5){
+                            Toast.makeText(this, "You caught a player. Escort the opponent to prison", Toast.LENGTH_SHORT).show();
                         }
                         String distanceInmetersString = String.format("%.2f", distanceInmeters);
                         Log.d(TAG, "setPlayerDistance: iAM on team B" + distanceInmetersString);
@@ -197,6 +201,9 @@ public class DirectionActivity extends AppCompatActivity implements LocationList
     protected void onStop() {
         super.onStop();
         // Disconnect GoogleApiClient when stopping Activity
+        Flag flag = new Flag(false);
+        databaseReferenceflag.setValue(flag);
+        updatePlayer.child("flagValue").setValue(false);
         googleApiClient.disconnect();
     }
 
@@ -315,11 +322,6 @@ public class DirectionActivity extends AppCompatActivity implements LocationList
 
     private void writeActualLocation(Location location) {
 
-//        String key;
-//        key = root.child("players").getKey();
-//        Toast.makeText(this, key, Toast.LENGTH_SHORT).show();
-        String playerReferenceId = getIntent().getStringExtra("playerId");
-        DatabaseReference updatePlayer = databaseReference.child(playerReferenceId);
         updatePlayer.child("latitude").setValue(location.getLatitude());
         updatePlayer.child("longitude").setValue(location.getLongitude());
         myCurrentLocation = location;
@@ -332,20 +334,15 @@ public class DirectionActivity extends AppCompatActivity implements LocationList
             textView.setText("");
         }
         else {
-
             textView.setText("" + distanceInmetersString );
-            if(distanceInmeters<100){
+            if(distanceInmeters<10){
                 Flag flag = new Flag(true);
                 databaseReferenceflag.setValue(flag);
-
                 updatePlayer.child("flagValue").setValue(true);
             }
         }
     }
-
     private void writeLastLocation() {
         writeActualLocation(lastLocation);
     }
-
-
 }
