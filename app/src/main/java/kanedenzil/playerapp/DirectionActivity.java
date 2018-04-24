@@ -185,7 +185,7 @@ public class DirectionActivity extends AppCompatActivity implements LocationList
                             opponentCurrentLocation.setLongitude(player.longitude);
 
                             float distanceInmeters = opponentCurrentLocation.distanceTo(myCurrentLocation);
-                            if (distanceInmeters < 5 && player.prisonValue.equals(false)) {
+                            if (distanceInmeters < 15 && player.prisonValue.equals(false)) {
                                 Toast.makeText(this, "You are caught by " + player.playerName + " . Now You will be taken to prison", Toast.LENGTH_SHORT).show();
                             }
                             String distanceInmetersString = String.format("%.2f", distanceInmeters);
@@ -197,7 +197,7 @@ public class DirectionActivity extends AppCompatActivity implements LocationList
                             partnerCurrentLocation.setLongitude(player.longitude);
 
                             float partnerdistanceInmeters1 = partnerCurrentLocation.distanceTo(myCurrentLocation);
-                            if (partnerdistanceInmeters1 < 5 && player.prisonValue.equals(true)) {
+                            if (partnerdistanceInmeters1 < 15 && player.prisonValue.equals(true)) {
                                 Toast.makeText(this, "You have been rescued. Back in the Game", Toast.LENGTH_SHORT).show();
 
                             }
@@ -208,7 +208,7 @@ public class DirectionActivity extends AppCompatActivity implements LocationList
                             opponentCurrentLocation.setLatitude(player.latitude);
                             opponentCurrentLocation.setLongitude(player.longitude);
                             float distanceInmeters = opponentCurrentLocation.distanceTo(myCurrentLocation);
-                            if (distanceInmeters < 5) {
+                            if (distanceInmeters < 15) {
                                 Toast.makeText(this, "You caught " + player.playerName + ". Escort "+ player.playerName +" to prison", Toast.LENGTH_SHORT).show();
                             }
                             String distanceInmetersString = String.format("%.2f", distanceInmeters);
@@ -220,7 +220,7 @@ public class DirectionActivity extends AppCompatActivity implements LocationList
                             partnerCurrentLocation.setLongitude(player.longitude);
 
                             float partnerdistanceInmeters = partnerCurrentLocation.distanceTo(myCurrentLocation);
-                            if (partnerdistanceInmeters < 5 && player.prisonValue.equals(true)) {
+                            if (partnerdistanceInmeters < 15 && player.prisonValue.equals(true)) {
                                 Toast.makeText(this, "You have been rescued.", Toast.LENGTH_SHORT).show();
                             }
 
@@ -393,10 +393,10 @@ public class DirectionActivity extends AppCompatActivity implements LocationList
         float distanceFromGeoCenter = geofenceCenterLocation.distanceTo(location);
 
         Log.d(TAG, "setPlayerDistance: ***" + distanceFromGeoCenter);
-        if (distanceFromGeoCenter > 150.00) {
-
+        if (distanceFromGeoCenter > 180.00) {
             isOutFromArena = true;
-        }else{
+        }
+        if (distanceFromGeoCenter < 150.00){
             Log.d(TAG, "isOutFromArena"  + isOutFromArena);
             isOutFromArena = false;
         }
@@ -459,7 +459,7 @@ public class DirectionActivity extends AppCompatActivity implements LocationList
             winning10.setLongitude(-79.334232);
             float distFromWinning10 = winning10.distanceTo(location);
 
-            if(distFromWinning1<3 || distFromWinning2<3 || distFromWinning3<3 || distFromWinning4<3 || distFromWinning5<3 || distFromWinning6<3 || distFromWinning7<3 || distFromWinning8<3 || distFromWinning9<3 || distFromWinning10<3){
+            if(distFromWinning1<10 || distFromWinning2<10 || distFromWinning3<10 || distFromWinning4<10 || distFromWinning5<10 || distFromWinning6<10 || distFromWinning7<10 || distFromWinning8<10 || distFromWinning9<10 || distFromWinning10<10){
                 databaseWinReference.child("hasWon").setValue(true);
             }
 
