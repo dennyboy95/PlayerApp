@@ -41,7 +41,9 @@ public class DirectionActivity extends AppCompatActivity implements LocationList
     private static final String TAG = DirectionActivity.class.getSimpleName();
     Location flagLocation = new Location("");
     Location myCurrentLocation = new Location("");
+    Location prisonCenterLocation = new Location("");
     String teamName;
+    String playerName;
     String playerReferenceId;
     DatabaseReference updatePlayer;
 
@@ -56,6 +58,7 @@ public class DirectionActivity extends AppCompatActivity implements LocationList
         Flag flag = new Flag(false);
         databaseReferenceflag.setValue(flag);
         teamName = getIntent().getExtras().getString("team");
+        playerName = getIntent().getExtras().getString("name");
         textView = findViewById(R.id.textView3);
         createGoogleApi();
 
@@ -123,8 +126,8 @@ public class DirectionActivity extends AppCompatActivity implements LocationList
         if(players.size() != 0) {
             List<Float> distanceList =  new ArrayList<>();
             Location opponentCurrentLocation = new Location("");
+            Location partnerCurrentLocation = new Location("");
             Location geofenceCenterLocation = new Location("");
-            Location prisonCenterLocation = new Location("");
             for (Player player : players) {
 
                 geofenceCenterLocation.setLatitude(43.716389);
@@ -132,43 +135,67 @@ public class DirectionActivity extends AppCompatActivity implements LocationList
                 float distanceFromGeoCenter = geofenceCenterLocation.distanceTo(myCurrentLocation);
 
                 Log.d(TAG, "setPlayerDistance: +_+_+_+_+_+_+_");
-                if(distanceFromGeoCenter>150.00){
+                if (distanceFromGeoCenter > 150.00 && player.prisonValue.equals(false)) {
                     Log.d(TAG, "setPlayerDistance: ////////////////////////");
                     Toast.makeText(this, "You are out of Arena. Move To the Prison", Toast.LENGTH_SHORT).show();
                 }
                 prisonCenterLocation.setLatitude(43.775398);
                 prisonCenterLocation.setLongitude(-79.336056);
                 float distanceFromPrisonCenter = prisonCenterLocation.distanceTo(myCurrentLocation);
-                if(distanceFromPrisonCenter<50.00){
+                Log.d(TAG, "distanceFromPrisonCenter: " + distanceFromPrisonCenter);
+                if (distanceFromPrisonCenter < 30 && player.prisonValue.equals(true)) {
                     Toast.makeText(this, "You are in Prison Wait for your team player to Rescue you", Toast.LENGTH_SHORT).show();
                 }
-//                if(distanceFromPrisonCenter>60.00 && distanceFromGeoCenter<150.00 && isPrisoned == false) {
-//                    Toast.makeText(this, "You have been rescued. Back in the Game", Toast.LENGTH_SHORT).show();
-//                }
 
 
-                if(teamName.equals("Team-A")){
-                    if(player.playerTeam.equals("Team-B")) {
-                        opponentCurrentLocation.setLatitude(player.latitude);
-                        opponentCurrentLocation.setLongitude(player.longitude);
+                if (!player.playerName.equals(playerName)) {
 
-                        float distanceInmeters = opponentCurrentLocation.distanceTo(myCurrentLocation);
-                        if(distanceInmeters<5){
-                            Toast.makeText(this, "You are caught. Now You will be taken to prison", Toast.LENGTH_SHORT).show();
+                    if (teamName.equals("Team-A")) {
+                        if (player.playerTeam.equals("Team-B")) {
+                            opponentCurrentLocation.setLatitude(player.latitude);
+                            opponentCurrentLocation.setLongitude(player.longitude);
+
+                            float distanceInmeters = opponentCurrentLocation.distanceTo(myCurrentLocation);
+                            if (distanceInmeters < 5 && player.prisonValue.equals(false)) {
+                                Toast.makeText(this, "You are caught. Now You will be taken to prison", Toast.LENGTH_SHORT).show();
+                            }
+                            String distanceInmetersString = String.format("%.2f", distanceInmeters);
+                            Log.d(TAG, "setPlayerDistance: " + distanceInmetersString);
                         }
-                        String distanceInmetersString = String.format("%.2f", distanceInmeters);
-                        Log.d(TAG, "setPlayerDistance: " + distanceInmetersString);
-                    }
-                }else {
-                    if (player.playerTeam.equals("Team-A")) {
-                        opponentCurrentLocation.setLatitude(player.latitude);
-                        opponentCurrentLocation.setLongitude(player.longitude);
-                        float distanceInmeters = opponentCurrentLocation.distanceTo(myCurrentLocation);
-                        if(distanceInmeters<5){
-                            Toast.makeText(this, "You caught a player. Escort the opponent to prison", Toast.LENGTH_SHORT).show();
+                        //OF THE SAME TEAM
+                        else {
+                            partnerCurrentLocation.setLatitude(player.latitude);
+                            partnerCurrentLocation.setLongitude(player.longitude);
+
+                            float partnerdistanceInmeters1 = partnerCurrentLocation.distanceTo(myCurrentLocation);
+                            if (partnerdistanceInmeters1 < 5 && player.prisonValue.equals(true)) {
+                                Toast.makeText(this, "You have been rescued. Back in the Game", Toast.LENGTH_SHORT).show();
+
+                            }
+
                         }
-                        String distanceInmetersString = String.format("%.2f", distanceInmeters);
-                        Log.d(TAG, "setPlayerDistance: iAM on team B" + distanceInmetersString);
+                    } else {
+                        if (player.playerTeam.equals("Team-A")) {
+                            opponentCurrentLocation.setLatitude(player.latitude);
+                            opponentCurrentLocation.setLongitude(player.longitude);
+                            float distanceInmeters = opponentCurrentLocation.distanceTo(myCurrentLocation);
+                            if (distanceInmeters < 5) {
+                                Toast.makeText(this, "You caught a player. Escort the opponent to prison", Toast.LENGTH_SHORT).show();
+                            }
+                            String distanceInmetersString = String.format("%.2f", distanceInmeters);
+                            Log.d(TAG, "setPlayerDistance: iAM on team B" + distanceInmetersString);
+                        }
+                        //OF THE SAME TEAM
+                        else {
+                            partnerCurrentLocation.setLatitude(player.latitude);
+                            partnerCurrentLocation.setLongitude(player.longitude);
+
+                            float partnerdistanceInmeters = partnerCurrentLocation.distanceTo(myCurrentLocation);
+                            if (partnerdistanceInmeters < 5 && player.prisonValue.equals(true)) {
+                                Toast.makeText(this, "You have been rescued.", Toast.LENGTH_SHORT).show();
+                            }
+
+                        }
                     }
                 }
             }
@@ -203,7 +230,7 @@ public class DirectionActivity extends AppCompatActivity implements LocationList
         // Disconnect GoogleApiClient when stopping Activity
         Flag flag = new Flag(false);
         databaseReferenceflag.setValue(flag);
-        updatePlayer.child("flagValue").setValue(false);
+//        updatePlayer.child("flagValue").setValue(false);
         googleApiClient.disconnect();
     }
 
@@ -237,7 +264,7 @@ public class DirectionActivity extends AppCompatActivity implements LocationList
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // Permission granted
-                    Toast.makeText(this, "Permission Granted", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(this, "Permission Granted", Toast.LENGTH_SHORT).show();
                     getLastKnownLocation();
 
                 } else {
@@ -281,7 +308,7 @@ public class DirectionActivity extends AppCompatActivity implements LocationList
     public void onConnected(@Nullable Bundle bundle) {
         Log.i(TAG, "onConnected()");
         if (checkPermission()) {
-            Toast.makeText(this, "Permission Granted", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "Permission Granted", Toast.LENGTH_SHORT).show();
             getLastKnownLocation();
         } else {
             askPermission();
@@ -328,6 +355,7 @@ public class DirectionActivity extends AppCompatActivity implements LocationList
         Log.d(TAG, "writeActualLocation: " + location.getLatitude() + location.getLongitude());
 
         float distanceInmeters = flagLocation.distanceTo(location);
+        float distanceFromPrison = prisonCenterLocation.distanceTo(location);
         String distanceInmetersString = String.format("%.2f", distanceInmeters);
 //        Log.d(TAG, "writeActualLocation: $$$$$$$$$$$$$$$" + distanceInmeters);
         if(textView.getText().toString().isEmpty()) {
@@ -340,6 +368,12 @@ public class DirectionActivity extends AppCompatActivity implements LocationList
                 databaseReferenceflag.setValue(flag);
                 updatePlayer.child("flagValue").setValue(true);
             }
+            if(distanceFromPrison<30){
+                updatePlayer.child("prisonValue").setValue(true);
+            }else{
+                updatePlayer.child("prisonValue").setValue(false);
+            }
+
         }
     }
     private void writeLastLocation() {

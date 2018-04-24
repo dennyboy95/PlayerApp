@@ -8,14 +8,16 @@ class Player  {
     Double latitude;
     Double longitude;
     Boolean flagValue;
+    Boolean prisonValue;
 
-    public Player(String playerId, String playerName, String playerTeam, Double latitude, Double longitude, Boolean flagValue) {
+    public Player(String playerId, String playerName, String playerTeam, Double latitude, Double longitude, Boolean flagValue, Boolean prisonValue) {
         this.playerId = playerId;
         this.playerName = playerName;
         this.playerTeam = playerTeam;
         this.latitude = latitude;
         this.longitude = longitude;
         this.flagValue = flagValue;
+        this.prisonValue = prisonValue;
     }
 
     public Player(double latitude, double longitude) {

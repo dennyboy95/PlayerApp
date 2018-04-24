@@ -88,12 +88,12 @@ public class StartActivity extends AppCompatActivity {
 
         if (!TextUtils.isEmpty(name)) {
 
-            Player player = new Player(databaseReference.getKey(), name,team, 0.0, 0.0, false);
+            Player player = new Player(databaseReference.getKey(), name,team, 0.0, 0.0, false, false);
 
             players.add(player);
             databaseReference.setValue(player);
 
-            Toast.makeText(this, "Player is added", Toast.LENGTH_LONG).show();
+//            Toast.makeText(this, "Player is added", Toast.LENGTH_LONG).show();
 
             Intent intent = new Intent(this, DirectionActivity.class);
             intent.putExtra("name", nameOfPerson.getText().toString());
