@@ -407,7 +407,7 @@ public class DirectionActivity extends AppCompatActivity implements LocationList
         }
         else {
             textView.setText("" + distanceInmetersString );
-            if(distanceInmeters<10){
+            if(distanceInmeters<25){
                 Flag flag = new Flag(true);
                 databaseReferenceflag.setValue(flag);
                 updatePlayer.child("flagValue").setValue(true);
