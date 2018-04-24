@@ -80,6 +80,8 @@ public class DirectionActivity extends AppCompatActivity implements LocationList
             flagLocation.setLatitude(43.772738);
             flagLocation.setLongitude(-79.333472);
         }
+        prisonCenterLocation.setLatitude(43.774844);
+        prisonCenterLocation.setLongitude(-79.335720);
 
 //        getUpdateOnMap();
         databaseReferenceflag.addValueEventListener( new ValueEventListener() {
@@ -169,11 +171,10 @@ public class DirectionActivity extends AppCompatActivity implements LocationList
                     t.cancel();
                 }
 
-                prisonCenterLocation.setLatitude(43.774844);
-                prisonCenterLocation.setLongitude(-79.335720);
-                float distanceFromPrisonCenter = prisonCenterLocation.distanceTo(myCurrentLocation);
-                Log.d(TAG, "distanceFromPrisonCenter: " + distanceFromPrisonCenter);
-                if (distanceFromPrisonCenter < 30 && player.prisonValue.equals(true)) {
+
+//                float distanceFromPrisonCenter = prisonCenterLocation.distanceTo(myCurrentLocation);
+//                Log.d(TAG, "distanceFromPrisonCenter: " + distanceFromPrisonCenter);
+                if (player.prisonValue.equals(true)) {
                    t = Toast.makeText(this, "You are in Prison Wait for your team player to Rescue you", Toast.LENGTH_SHORT);
                    t.show();
                 }else{
@@ -419,18 +420,20 @@ public class DirectionActivity extends AppCompatActivity implements LocationList
             isOutFromArena = false;
         }
 
-//        Log.d(TAG, "writeActualLocation: $$$$$$$$$$$$$$$" + distanceInmeters);
-        if(textView.getText().toString().isEmpty()) {
-            textView.setText("");
-        }
-        else {
+////        Log.d(TAG, "writeActualLocation: $$$$$$$$$$$$$$$" + distanceInmeters);
+//        if(textView.getText().toString().isEmpty()) {
+//            textView.setText("");
+//        }
+//        else {
             textView.setText("" + distanceInmetersString );
             if(distanceInmeters<25){
                 Flag flag = new Flag(true);
                 databaseReferenceflag.setValue(flag);
                 updatePlayer.child("flagValue").setValue(true);
             }
-            if(distanceFromPrison<30){
+            Log.d(TAG, "distanceFromPrison: " + distanceFromPrison);
+            if(distanceFromPrison<500){
+                Log.d(TAG, "Iam here: ");
                 updatePlayer.child("prisonValue").setValue(true);
             }else{
                 updatePlayer.child("prisonValue").setValue(false);
@@ -483,7 +486,7 @@ public class DirectionActivity extends AppCompatActivity implements LocationList
 
 
         }
-    }
+//    }
     private void writeLastLocation() {
         writeActualLocation(lastLocation);
     }
