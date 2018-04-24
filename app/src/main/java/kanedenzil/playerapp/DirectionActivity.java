@@ -393,7 +393,7 @@ public class DirectionActivity extends AppCompatActivity implements LocationList
         float distanceFromGeoCenter = geofenceCenterLocation.distanceTo(location);
 
         Log.d(TAG, "setPlayerDistance: ***" + distanceFromGeoCenter);
-        if (distanceFromGeoCenter > 15.00) {
+        if (distanceFromGeoCenter > 150.00) {
 
             isOutFromArena = true;
         }else{
