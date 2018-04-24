@@ -38,14 +38,18 @@ public class DirectionActivity extends AppCompatActivity implements LocationList
 //  private static final String NOTIFICATION_MSG = "NOTIFICATION MSG";
     DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("players");
     DatabaseReference databaseReferenceflag = FirebaseDatabase.getInstance().getReference().child("flag");
+    DatabaseReference databaseWinReference = FirebaseDatabase.getInstance().getReference().child("WIN");
     private static final String TAG = DirectionActivity.class.getSimpleName();
     Location flagLocation = new Location("");
     Location myCurrentLocation = new Location("");
     Location prisonCenterLocation = new Location("");
+    Location geofenceCenterLocation = new Location("");
+    List<Location> locationList = new ArrayList<>();
     String teamName;
     String playerName;
     String playerReferenceId;
     DatabaseReference updatePlayer;
+    Boolean isOutFromArena = false;
 
 
     @Override
@@ -98,6 +102,26 @@ public class DirectionActivity extends AppCompatActivity implements LocationList
             }
         });
 
+        databaseWinReference.addValueEventListener( new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.d(TAG, "onDataChange: ==============DATASanapshot==========="+dataSnapshot.toString());
+//                List<Player> players =  new ArrayList<>();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Log.d(TAG, "onDataChange: ==============snapshot==========="+snapshot.toString());
+                    Boolean winValue = (Boolean) snapshot.getValue();
+                    Log.d(TAG, "onDataChange: "+ winValue);
+                    if(winValue.equals(true)){
+                        Toast.makeText(DirectionActivity.this, "" + teamName + "has Won. Game Over", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -127,26 +151,31 @@ public class DirectionActivity extends AppCompatActivity implements LocationList
             List<Float> distanceList =  new ArrayList<>();
             Location opponentCurrentLocation = new Location("");
             Location partnerCurrentLocation = new Location("");
-            Location geofenceCenterLocation = new Location("");
+
+
             for (Player player : players) {
 
-                geofenceCenterLocation.setLatitude(43.716389);
-                geofenceCenterLocation.setLongitude(-79.334517);
+                geofenceCenterLocation.setLatitude(43.773219);
+                geofenceCenterLocation.setLongitude(-79.334874);
                 float distanceFromGeoCenter = geofenceCenterLocation.distanceTo(myCurrentLocation);
 
                 Log.d(TAG, "setPlayerDistance: +_+_+_+_+_+_+_");
-                if (distanceFromGeoCenter > 150.00 && player.prisonValue.equals(false)) {
-                    Log.d(TAG, "setPlayerDistance: ////////////////////////");
+                if (isOutFromArena == true && player.prisonValue.equals(false)) {
+                    Log.d(TAG, "setPlayerDistance: ////////////////////////" + distanceFromGeoCenter);
                     Toast.makeText(this, "You are out of Arena. Move To the Prison", Toast.LENGTH_SHORT).show();
                 }
-                prisonCenterLocation.setLatitude(43.775398);
-                prisonCenterLocation.setLongitude(-79.336056);
+
+                prisonCenterLocation.setLatitude(43.775793);
+                prisonCenterLocation.setLongitude(-79.336210);
                 float distanceFromPrisonCenter = prisonCenterLocation.distanceTo(myCurrentLocation);
                 Log.d(TAG, "distanceFromPrisonCenter: " + distanceFromPrisonCenter);
                 if (distanceFromPrisonCenter < 30 && player.prisonValue.equals(true)) {
                     Toast.makeText(this, "You are in Prison Wait for your team player to Rescue you", Toast.LENGTH_SHORT).show();
                 }
 
+                if(player.flagValue.equals(true) && player.prisonValue.equals(false)){
+
+                }
 
                 if (!player.playerName.equals(playerName)) {
 
@@ -157,7 +186,7 @@ public class DirectionActivity extends AppCompatActivity implements LocationList
 
                             float distanceInmeters = opponentCurrentLocation.distanceTo(myCurrentLocation);
                             if (distanceInmeters < 5 && player.prisonValue.equals(false)) {
-                                Toast.makeText(this, "You are caught. Now You will be taken to prison", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(this, "You are caught by " + player.playerName + " . Now You will be taken to prison", Toast.LENGTH_SHORT).show();
                             }
                             String distanceInmetersString = String.format("%.2f", distanceInmeters);
                             Log.d(TAG, "setPlayerDistance: " + distanceInmetersString);
@@ -180,7 +209,7 @@ public class DirectionActivity extends AppCompatActivity implements LocationList
                             opponentCurrentLocation.setLongitude(player.longitude);
                             float distanceInmeters = opponentCurrentLocation.distanceTo(myCurrentLocation);
                             if (distanceInmeters < 5) {
-                                Toast.makeText(this, "You caught a player. Escort the opponent to prison", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(this, "You caught " + player.playerName + ". Escort "+ player.playerName +" to prison", Toast.LENGTH_SHORT).show();
                             }
                             String distanceInmetersString = String.format("%.2f", distanceInmeters);
                             Log.d(TAG, "setPlayerDistance: iAM on team B" + distanceInmetersString);
@@ -230,7 +259,8 @@ public class DirectionActivity extends AppCompatActivity implements LocationList
         // Disconnect GoogleApiClient when stopping Activity
         Flag flag = new Flag(false);
         databaseReferenceflag.setValue(flag);
-//        updatePlayer.child("flagValue").setValue(false);
+        databaseWinReference.child("hasWon").setValue(false);
+        updatePlayer.child("flagValue").setValue(false);
         googleApiClient.disconnect();
     }
 
@@ -357,6 +387,20 @@ public class DirectionActivity extends AppCompatActivity implements LocationList
         float distanceInmeters = flagLocation.distanceTo(location);
         float distanceFromPrison = prisonCenterLocation.distanceTo(location);
         String distanceInmetersString = String.format("%.2f", distanceInmeters);
+
+        geofenceCenterLocation.setLatitude(43.773219);
+        geofenceCenterLocation.setLongitude(-79.334874);
+        float distanceFromGeoCenter = geofenceCenterLocation.distanceTo(location);
+
+        Log.d(TAG, "setPlayerDistance: ***" + distanceFromGeoCenter);
+        if (distanceFromGeoCenter > 15.00) {
+
+            isOutFromArena = true;
+        }else{
+            Log.d(TAG, "isOutFromArena"  + isOutFromArena);
+            isOutFromArena = false;
+        }
+
 //        Log.d(TAG, "writeActualLocation: $$$$$$$$$$$$$$$" + distanceInmeters);
         if(textView.getText().toString().isEmpty()) {
             textView.setText("");
@@ -373,6 +417,52 @@ public class DirectionActivity extends AppCompatActivity implements LocationList
             }else{
                 updatePlayer.child("prisonValue").setValue(false);
             }
+
+            Location winning1 = new Location("");
+            winning1.setLatitude(43.772949);
+            winning1.setLongitude(-79.336022);
+            float distFromWinning1 = winning1.distanceTo(location);
+            Location winning2 = new Location("");
+            winning2.setLatitude(43.772978);
+            winning2.setLongitude(-79.335909);
+            float distFromWinning2 = winning2.distanceTo(location);
+            Location winning3 = new Location("");
+            winning3.setLatitude(43.773003);
+            winning3.setLongitude(-79.335795);
+            float distFromWinning3 = winning3.distanceTo(location);
+            Location winning4 = new Location("");
+            winning4.setLatitude(43.773031);
+            winning4.setLongitude(-79.335678);
+            float distFromWinning4 = winning4.distanceTo(location);
+            Location winning5 = new Location("");
+            winning5.setLatitude(43.773062);
+            winning5.setLongitude(-79.335527);
+            float distFromWinning5 = winning5.distanceTo(location);
+            Location winning6 = new Location("");
+            winning6.setLatitude(43.773111);
+            winning6.setLongitude(-79.335321);
+            float distFromWinning6 = winning6.distanceTo(location);
+            Location winning7 = new Location("");
+            winning7.setLatitude(43.773257);
+            winning7.setLongitude(-79.334697);
+            float distFromWinning7 = winning7.distanceTo(location);
+            Location winning8 = new Location("");
+            winning8.setLatitude(43.773286);
+            winning8.setLongitude(-79.334559);
+            float distFromWinning8 = winning8.distanceTo(location);
+            Location winning9 = new Location("");
+            winning9.setLatitude(43.773309);
+            winning9.setLongitude(-79.334444);
+            float distFromWinning9 = winning9.distanceTo(location);
+            Location winning10 = new Location("");
+            winning10.setLatitude(43.773353);
+            winning10.setLongitude(-79.334232);
+            float distFromWinning10 = winning10.distanceTo(location);
+
+            if(distFromWinning1<3 || distFromWinning2<3 || distFromWinning3<3 || distFromWinning4<3 || distFromWinning5<3 || distFromWinning6<3 || distFromWinning7<3 || distFromWinning8<3 || distFromWinning9<3 || distFromWinning10<3){
+                databaseWinReference.child("hasWon").setValue(true);
+            }
+
 
         }
     }
