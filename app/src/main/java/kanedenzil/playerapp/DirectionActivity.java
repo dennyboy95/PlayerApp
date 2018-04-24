@@ -393,7 +393,7 @@ public class DirectionActivity extends AppCompatActivity implements LocationList
         float distanceFromGeoCenter = geofenceCenterLocation.distanceTo(location);
 
         Log.d(TAG, "setPlayerDistance: ***" + distanceFromGeoCenter);
-        if (distanceFromGeoCenter > 15.00) {
+        if (distanceFromGeoCenter > 150.00) {
 
             isOutFromArena = true;
         }else{
@@ -407,7 +407,7 @@ public class DirectionActivity extends AppCompatActivity implements LocationList
         }
         else {
             textView.setText("" + distanceInmetersString );
-            if(distanceInmeters<10){
+            if(distanceInmeters<25){
                 Flag flag = new Flag(true);
                 databaseReferenceflag.setValue(flag);
                 updatePlayer.child("flagValue").setValue(true);
