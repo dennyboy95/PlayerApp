@@ -181,9 +181,9 @@ public class DirectionActivity extends AppCompatActivity implements LocationList
                     t.cancel();
                 }
 
-                if(player.flagValue.equals(true) && player.prisonValue.equals(false)){
-
-                }
+//                if(player.flagValue.equals(true) && player.prisonValue.equals(false)){
+//
+//                }
 
                 if (!player.playerName.equals(playerName)) {
 
@@ -432,7 +432,7 @@ public class DirectionActivity extends AppCompatActivity implements LocationList
                 updatePlayer.child("flagValue").setValue(true);
             }
             Log.d(TAG, "distanceFromPrison: " + distanceFromPrison);
-            if(distanceFromPrison<500){
+            if(distanceFromPrison<35){
                 Log.d(TAG, "Iam here: ");
                 updatePlayer.child("prisonValue").setValue(true);
             }else{
