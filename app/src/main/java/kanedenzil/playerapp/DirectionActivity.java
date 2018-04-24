@@ -94,6 +94,7 @@ public class DirectionActivity extends AppCompatActivity implements LocationList
                     if(flagValue.equals(true)){
                         Toast.makeText(DirectionActivity.this, "FLAG HAS BEEN PICKED by " + teamName, Toast.LENGTH_SHORT).show();
                     }
+
                 }
             }
             @Override
@@ -158,19 +159,25 @@ public class DirectionActivity extends AppCompatActivity implements LocationList
                 geofenceCenterLocation.setLatitude(43.773219);
                 geofenceCenterLocation.setLongitude(-79.334874);
                 float distanceFromGeoCenter = geofenceCenterLocation.distanceTo(myCurrentLocation);
-
+                Toast t = Toast.makeText(this, "You are out of Arena. Move To the Prison", Toast.LENGTH_SHORT);
                 Log.d(TAG, "setPlayerDistance: +_+_+_+_+_+_+_");
                 if (isOutFromArena == true && player.prisonValue.equals(false)) {
                     Log.d(TAG, "setPlayerDistance: ////////////////////////" + distanceFromGeoCenter);
-                    Toast.makeText(this, "You are out of Arena. Move To the Prison", Toast.LENGTH_SHORT).show();
+                    t = Toast.makeText(this, "You are out of Arena. Move To the Prison", Toast.LENGTH_SHORT);
+                    t.show();
+                }else{
+                    t.cancel();
                 }
 
-                prisonCenterLocation.setLatitude(43.775793);
-                prisonCenterLocation.setLongitude(-79.336210);
+                prisonCenterLocation.setLatitude(43.774844);
+                prisonCenterLocation.setLongitude(-79.335720);
                 float distanceFromPrisonCenter = prisonCenterLocation.distanceTo(myCurrentLocation);
                 Log.d(TAG, "distanceFromPrisonCenter: " + distanceFromPrisonCenter);
                 if (distanceFromPrisonCenter < 30 && player.prisonValue.equals(true)) {
-                    Toast.makeText(this, "You are in Prison Wait for your team player to Rescue you", Toast.LENGTH_SHORT).show();
+                   t = Toast.makeText(this, "You are in Prison Wait for your team player to Rescue you", Toast.LENGTH_SHORT);
+                   t.show();
+                }else{
+                    t.cancel();
                 }
 
                 if(player.flagValue.equals(true) && player.prisonValue.equals(false)){
@@ -186,7 +193,10 @@ public class DirectionActivity extends AppCompatActivity implements LocationList
 
                             float distanceInmeters = opponentCurrentLocation.distanceTo(myCurrentLocation);
                             if (distanceInmeters < 15 && player.prisonValue.equals(false)) {
-                                Toast.makeText(this, "You are caught by " + player.playerName + " . Now You will be taken to prison", Toast.LENGTH_SHORT).show();
+                                t = Toast.makeText(this, "You are caught by " + player.playerName + " . Now You will be taken to prison", Toast.LENGTH_SHORT);
+                                t.show();
+                            }else {
+                                t.cancel();
                             }
                             String distanceInmetersString = String.format("%.2f", distanceInmeters);
                             Log.d(TAG, "setPlayerDistance: " + distanceInmetersString);
@@ -198,8 +208,10 @@ public class DirectionActivity extends AppCompatActivity implements LocationList
 
                             float partnerdistanceInmeters1 = partnerCurrentLocation.distanceTo(myCurrentLocation);
                             if (partnerdistanceInmeters1 < 15 && player.prisonValue.equals(true)) {
-                                Toast.makeText(this, "You have been rescued. Back in the Game", Toast.LENGTH_SHORT).show();
-
+                                t = Toast.makeText(this, "You have been rescued. Back in the Game", Toast.LENGTH_SHORT);
+                                t.show();
+                            }else{
+                                t.cancel();
                             }
 
                         }
@@ -209,7 +221,10 @@ public class DirectionActivity extends AppCompatActivity implements LocationList
                             opponentCurrentLocation.setLongitude(player.longitude);
                             float distanceInmeters = opponentCurrentLocation.distanceTo(myCurrentLocation);
                             if (distanceInmeters < 15) {
-                                Toast.makeText(this, "You caught " + player.playerName + ". Escort "+ player.playerName +" to prison", Toast.LENGTH_SHORT).show();
+                                t = Toast.makeText(this, "You caught " + player.playerName + ". Escort "+ player.playerName +" to prison", Toast.LENGTH_SHORT);
+                                t.show();
+                            }else{
+                                t.cancel();
                             }
                             String distanceInmetersString = String.format("%.2f", distanceInmeters);
                             Log.d(TAG, "setPlayerDistance: iAM on team B" + distanceInmetersString);
@@ -221,7 +236,10 @@ public class DirectionActivity extends AppCompatActivity implements LocationList
 
                             float partnerdistanceInmeters = partnerCurrentLocation.distanceTo(myCurrentLocation);
                             if (partnerdistanceInmeters < 15 && player.prisonValue.equals(true)) {
-                                Toast.makeText(this, "You have been rescued.", Toast.LENGTH_SHORT).show();
+                                t = Toast.makeText(this, "You have been rescued.", Toast.LENGTH_SHORT);
+                                t.show();
+                            }else{
+                                t.cancel();
                             }
 
                         }
